@@ -109,14 +109,18 @@
 		{id: 295, name: `Horgen` }
 	];
 
-	let rooms;
-	let area;
-	let price = '...'
-	let selected;
-	function handleSubmit() {
-		let url =
+
+    let rooms;
+    let area;
+    let selected;
+    let gbPrice = '...'; 
+    let rfPrice = '...'; 
+	let kuhs = '...'; 
+
+    function handleSubmit() {
+        let url =
             PUBLIC_BASE_URL +
-            "/api/prediction/apartment?bfs_number=" +
+            "/api/predict?bfs_number=" +
             selected.id +
             "&area=" +
             area +
@@ -124,13 +128,18 @@
             rooms;
         console.log(url);
         axios.get(url).then((response) => {
-            price = 'CHF ' + response.data;
+            gbPrice = 'CHF ' + response.data.gradient_boosting_prediction.toFixed(2);
+            rfPrice = 'CHF ' + response.data.random_forest_prediction.toFixed(2);
+			kuhs = 'CHF ' + response.data.kuhs.toFixed(2);
         });
-	}
+    }
 </script>
 <div class="container text-center">
 
-	<h1>Are you paying to much? Our model predicts that you should be paying {price}</h1>
+	<h1>Price Estimation</h1>
+    <div>Gradient Boosting Model predicts: {gbPrice}</div>
+    <div>Random Forest Model predicts: {rfPrice}</div>
+	<div>Kuhs predicts: {kuhs}</div>
 
 	<div class="row justify-content-md-center">
 	  <div class="col col-lg-2">
